@@ -21,10 +21,31 @@ class TokenData(BaseModel):
     email: str = None
 
 
-class ArticleSchema(BaseModel):
-    id: int
+from pydantic import BaseModel, HttpUrl, EmailStr
+from datetime import datetime
+
+
+class ArticleBase(BaseModel):
     title: str
-    link: str
+    link: HttpUrl
     summary: str
-    published: str
+    published: datetime
     author: str
+
+    class Config:
+        arbitrary_types_allowed = True
+
+
+class ArticleCreate(ArticleBase):
+    pass
+
+
+class ArticleUpdate(ArticleBase):
+    pass
+
+
+class ArticleSchema(ArticleBase):
+    id: int
+
+    class Config:
+        from_attributes = True

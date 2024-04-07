@@ -11,9 +11,14 @@ router = APIRouter()
 @router.get("/articles/", response_model=List[ArticleSchema])
 def get_articles(db: Session = Depends(get_db)):
     articles = db.query(Article).all()
-    return [{"id": article.id,
-             "title": article.title,
-             "link": article.link,
-             "summary": article.summary,
-             "published": article.published.strftime('%Y-%m-%d %H:%M:%S'),
-             "author": article.author} for article in articles]
+    return [
+        {
+            "id": article.id,
+            "title": article.title,
+            "link": article.link,
+            "summary": article.summary,
+            "published": article.published.strftime("%Y-%m-%d %H:%M:%S"),
+            "author": article.author,
+        }
+        for article in articles
+    ]

@@ -6,7 +6,10 @@ from backend.database.database import Base
 
 
 def article_exists(db, title: str, link: str) -> bool:
-    return db.query(Article).filter(Article.title == title, Article.link == link).first() is not None
+    return (
+        db.query(Article).filter(Article.title == title, Article.link == link).first()
+        is not None
+    )
 
 
 def parse_guardian_rss(url: str, db):
@@ -19,8 +22,10 @@ def parse_guardian_rss(url: str, db):
                 title=entry.title,
                 link=entry.link,
                 summary=entry.summary,
-                published=datetime.datetime.strptime(entry.published, '%a, %d %b %Y %H:%M:%S %Z'),
-                author=entry.author
+                published=datetime.datetime.strptime(
+                    entry.published, "%a, %d %b %Y %H:%M:%S %Z"
+                ),
+                author=entry.author,
             )
             db.add(article)
             print(f"Added arcticle: {article.title}")
